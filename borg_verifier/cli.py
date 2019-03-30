@@ -13,9 +13,15 @@ def main():
     parser.add_argument('--auth_username', default=None)
     parser.add_argument('--auth_password', default=None)
     parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--quiet', action='store_true')
     args = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO if not args.debug else logging.DEBUG)
+    log_level = logging.INFO
+    if args.debug:
+        log_level = logging.DEBUG
+    elif args.quiet:
+        log_level = logging.WARNING
+    logging.basicConfig(level=log_level)
 
     credentials = None
     if args.auth_username or args.auth_password:

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
         name='borg_verifier',
-        version='0.1.0',
+        version='0.1.1',
         description='Verifies Borg backups and exports Prometheus metrics',
         author='Peter marheine',
         author_email='peter@taricorp.net',

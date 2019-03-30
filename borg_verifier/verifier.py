@@ -44,8 +44,14 @@ class BorgVerifier(object):
         self.check_complete_counter.labels(
                 repo=self.path, result=status).set_to_current_time()
 
+    def _log(self, level, msg, *args, **kwargs):
+        logger.log(level, '%s: ' + msg, self.path, *args, **kwargs)
+
     def info(self, msg, *args, **kwargs):
-        logger.info('%s: ' + msg, self.path, *args, **kwargs)
+        self._log(logging.INFO, msg, *args, **kwargs)
+
+    def error(self, msg, *args, **kwargs):
+        self._log(logging.ERROR, msg, *args, **kwargs)
 
     SIZE_LABELS = {
         'total_size': 'raw',
@@ -85,9 +91,9 @@ class BorgVerifier(object):
             self.info('OK')
             self._set_complete('OK')
         except subprocess.CalledProcessError:
-            self.info('BAD')
+            self.error('BAD')
             self._set_complete('BAD')
         except Exception:
-            self.info('ERROR')
+            self.error('ERROR')
             self._set_complete('INTERNAL')
             raise
